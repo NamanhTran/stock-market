@@ -3,10 +3,7 @@ use STOCK_TRADER;
 
 CREATE table if not exists CUSTOMER(user_ID int NOT NULL, user_name varchar(20) NOT NULL, 
 first_name varchar(30) NOT NULL, last_name varchar(30) NOT NULL,
-suffix varchar(5), ssn varchar(9) NOT NULL, address1 varchar(60), address2 varchar(60),
-city varchar(45), state varchar(30), country varchar(45), zipcode varchar(5),
-date_of_birth datetime,
-primary key(user_ID, user_name, ssn));
+primary key(user_ID, user_name));
 
 CREATE table if not exists STOCK(user_ID int NOT NULL, stock_ID varchar(4) NOT NULL,
 quantity int NOT NULL, market_value float NOT NULL,
