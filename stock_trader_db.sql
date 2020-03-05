@@ -19,8 +19,8 @@ cost_of_share float NOT NULL,
 primary key(order_num),
 foreign key(stock_ID) references STOCK(stock_ID));
 
-CREATE table if not exists BALANCE(user_ID int NOT NULL, net_account_value float,
-net_cash float, transaction_type varchar(10), date_of_deposit datetime, deposit_amount float,
+CREATE table if not exists BALANCE(user_ID int NOT NULL, net_cash float,
+transaction_type varchar(10), date_of_deposit datetime, deposit_amount float,
 date_of_withdrawal datetime, withdrawal_amount float,
 primary key(user_ID),
 foreign key(user_ID) references CUSTOMER(user_ID));
