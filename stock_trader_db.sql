@@ -8,12 +8,12 @@ city varchar(45), state varchar(30), country varchar(45), zipcode varchar(5),
 date_of_birth datetime,
 primary key(user_ID, user_name, ssn));
 
-CREATE table if not exists STOCK(user_ID int NOT NULL, stock_ID int NOT NULL,
+CREATE table if not exists STOCK(user_ID int NOT NULL, stock_ID varchar(4) NOT NULL,
 quantity int NOT NULL, market_value float NOT NULL,
-primary key(user_ID, stock_ID), index(stock_ID),
+primary key(stock_ID),
 foreign key(user_ID) references CUSTOMER(user_ID));
 
-CREATE table if not exists STOCK_ORDER(order_num int NOT NULL, stock_ID int NOT NULL,
+CREATE table if not exists STOCK_ORDER(order_num int NOT NULL, stock_ID varchar(4) NOT NULL,
 date_of_transaction datetime NOT NULL, num_of_shares int NOT NULL, total_cost float NOT NULL, 
 cost_of_share float NOT NULL,
 primary key(order_num),
@@ -32,3 +32,6 @@ state varchar(30), country varchar(45), zip varchar(5), date_added datetime,
 date_removed datetime, status_of_account varchar(20),
 primary key(user_ID, bank_num),
 foreign key(user_ID) references CUSTOMER(user_ID));
+
+
+show tables;
