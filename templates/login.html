@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stonks - Login</title>
-  </head>
-
-  <header>
-    <h1>Stonks!</h1>
-  </header>
-
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="buy.html">Buy</a>
-    <a href="sell.html">Sell</a>
-    <hr>
-  </nav>
-
-  <body>
+{% extends "template.html" %}
+{% set active_page = 'login' -%}
+{% block body_content %}
     <div>
     <h3>Welcome Returning User!</h3>
     </div>
@@ -33,22 +12,7 @@
       <input type="submit"><br><br>
       <div>
         Or sign up today!
-        <a href="register.html">Click Here To Register</a>
+        <a href="./register">Click Here To Register</a>
       </div>
     </form>
-
-  </body>
-
-
-  <footer>
-    <hr>
-    <a href="home.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="buy.html">Buy</a>
-    <a href="sell.html">Sell</a>
-  </footer>
-
-
-</html>
+{% endblock body_content %}

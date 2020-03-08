@@ -1,5 +1,5 @@
 {% extends "template.html" %}
-
+{% set active_page = 'home' -%}
 {% block body_content %}
     <section>
       <div>
@@ -31,7 +31,7 @@
         <input type="submit" value="Sign In"><br>
         <div>
           Or sign up today!
-          <a href="register.html">Register Today</a>
+          <a href="./register">Register Today</a>
         </div>
       </form>
     </aside>

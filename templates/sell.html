@@ -1,39 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stonks - Register</title>
-  </head>
-
-  <header>
-    <h1>Stonks!</h1>
-  </header>
-
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="buy.html">Buy</a>
-    <a href="sell.html">Sell</a>
-    <hr>
-  </nav>
-
-  <body>
-    <h2>SELL PAGE</h2>
-
-  </body>
-
-  <footer>
-    <hr>
-    <a href="home.html">Home</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Register</a>
-    <a href="portfolio.html">Portfolio</a>
-    <a href="buy.html">Buy</a>
-    <a href="sell.html">Sell</a>
-  </footer>
-
-  </html>
+{% extends "template.html" %}
+{% set active_page = 'sell' -%}
+{% block body_content %}
+<h2>SELL PAGE</h2>
+{% endblock body_content %}
