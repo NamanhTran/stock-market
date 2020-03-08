@@ -1,6 +1,80 @@
-{% extends "template.html" %}
-{% set active_page = "register" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block body_content %}
-<h1 style="text-align: center;">Welcome to the register page!</h1>
-{% endblock body_content %}
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stonks - Register</title>
+  </head>
+
+  <header>
+    <h1>Stonks!</h1>
+  </header>
+
+  <nav>
+    <a href="home.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="buy.html">Buy</a>
+    <a href="sell.html">Sell</a>
+    <hr>
+  </nav>
+
+  <body>
+    <div>
+    <h3>Welcome New User!</h3>
+    </div>
+
+    <form>
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username"><br>
+      <label for="fname">First Name:</label><br>
+      <input type="text" id="fname" name="fname"><br>
+      <label for="lname">Last Name:</label><br>
+      <input type="text" id="lname" name="lname"><br>
+      <label for="gender">Gender:</label><br>
+      <input type="radio" id="male" name="gender" value="male">
+      <label for="male">Male</label><br>
+      <input type="radio" id="female" name="gender" value="female">
+      <label for="female">Female</label><br>
+      <input type="radio" id="other" name="gender" value="other">
+      <label for="other">Other</label><br>
+      <label for="bday">Enter Your Birthdate:</label>
+      <input type="date" id="bday" name="bday" min="1920-4-20" max="2020-4-20"><br><br>
+      <label for="email">Email Address:</label><br>
+      <input type="email" id="email" name="email"><br>
+      <label for="email">Confirm Email Address:</label><br>
+      <input type="email" id="email" name="email"><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password"><br>
+      <label for="password">Confirm password:</label><br>
+      <input type="password" id="password" name="password"><br><br>
+      <label for="address1">Address Line 1:</label><br>
+      <input type="text" id="address1" name="address1"><br>
+      <label for="address2">Address Line 2:</label><br>
+      <input type="text" id="address2" name="address2"><br>
+      <label for="city">City:</label><br>
+      <input type="text" id="city" name="city"><br>
+      <label for="state">State:</label><br>
+      <input type="text" id="state" name="state"><br>
+      <label for="zip">Zip Code:</label><br>
+      <input type="number" id="zip" name="zip" min="1" max="5"><br><br>
+      <input type="submit" value="Sign Up">
+    </form>
+
+  </body>
+
+
+  <footer>
+    <hr>
+    <a href="home.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="portfolio.html">Portfolio</a>
+    <a href="buy.html">Buy</a>
+    <a href="sell.html">Sell</a>
+  </footer>
+
+
+</html>
