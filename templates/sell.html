@@ -2,8 +2,14 @@
 {% set active_page = 'sell' -%}
 {% block body_content %}
 <form action="/sell" method="POST">
-  <label for="quote-input">Enter stock symbol:</label> <br>
-  <input type="text" name="sell-input">
-  <input type="submit" value="Sell 1">
+  <label for="sell-input">Select stock symbol to sell:</label> 
+  <br>
+  <select name="sell-input">
+    {% for symbol in data %}
+      <option value="{{ symbol[0] }}">{{ symbol[0] }}</option>
+    {% endfor %}
+  </select> 
+  <input type="number" min="1" max="100" value="1" name="buy-quantity">
+  <input type="submit" value="Sell Stock(s)">
 </form>
 {% endblock body_content %}

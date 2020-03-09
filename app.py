@@ -1,26 +1,30 @@
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import redirect
+from flask import Flask, render_template, request, redirect
 from alpha_vantage.timeseries import TimeSeries
+from db_queries import get_user_balance, insert_stocks, get_user_stock_quantity, sell_stocks, get_all_stocks
+from stock_ops import price_lookup
 import MySQLdb
-import database
 
+# Initialize the flask application
 app = Flask(__name__)
-db = MySQLdb.connect(host="localhost",
-                        user = "root",
-                        passwd = "Namanhtran1!",
-                        db = "STOCK_TRADER")
-cur = db.cursor()
 
+# Connection to the local database
+db = MySQLdb.connect(host="localhost",
+                     user = "root",
+                     passwd = "Namanhtran1!",
+                     db = "STOCK_TRADER")
+
+cur = db.cursor()
 cur.execute("SELECT net_cash FROM BALANCE WHERE user_ID = 0")
 rows = cur.fetchone()
 print(float(rows[0]))
 db.commit()
+cur.close()
 
 user_id = 0
-# H2AKUMZSFASPIHZH
+
+# Alpha Vantage API
 api = TimeSeries(key='H2AKUMZSFASPIHZH')
+
 # Home page
 @app.route('/')
 def home():
@@ -31,114 +35,102 @@ def home():
 def portfolio():
     return render_template('portfolio.html')
 
+# Quote page login NOT required
 @app.route('/quote', methods=["GET", "POST"])
 def quote():
+    # If user is request for page send html
     if request.method == "GET":
         return render_template('quote.html')
     
+    # If user is sending data send html with price
     elif request.method == "POST":
-        data = request.form.get('quote-input')
-        try:
-            quote = api.get_quote_endpoint(symbol=data)
-            print(quote[0]["05. price"])
-            data = {'price': float(quote[0]["05. price"]), 'symbol': data}
-            return render_template('quote_response.html', data=data)
+        # Get the symbol input from the user
+        symbol = request.form.get('quote-input')
 
-        except:
-            print("failed")
-        
-        return redirect('/quote')
+        # Get the stock price
+        stock_value = price_lookup(api, symbol)
+        if stock_value == None:
+            return render_template('error.html', string="Please enter a valid stock symbol")
+
+        # Send data to html page and give user the rendered html page
+        data = {'price': stock_value, 'symbol': symbol}
+        return render_template('quote_response.html', data=data)
 
 # Buy page login required
 @app.route("/buy", methods=["GET", "POST"])
 def buy():
+    # If user is request for page send html
     if request.method == "GET":
         return render_template('buy.html')
     
+    # If user is sending data update DB with info given
     elif request.method == "POST":
+        # Get the symbol and quantity input from the user
         symbol = request.form.get('buy-input')
-        quantity = 1
+        quantity = int(request.form.get('buy-quantity'))
 
-        try:
-            stock_price = float(api.get_quote_endpoint(symbol=symbol)[0]["05. price"]) * quantity
+        # Get the stock price
+        stock_value = price_lookup(api, symbol)
+        if stock_value == None:
+            return render_template('error.html', string="Please enter a valid stock symbol")
+        
+        # Calculate total value of the transaction
+        total_value = stock_value * quantity
 
-        except:
-            print("failed")
+        user_cash = get_user_balance(db, user_id)
+        
+        # Update DB if user has enough money to buy
+        if (user_cash > total_value):
+            insert_stocks(db, user_id, user_cash, symbol, quantity, total_value)
             return redirect('/buy')
         
-        # Checks if user has enough money to buy the amount of stocks
-        cur = db.cursor()
-        cur.execute("SELECT net_cash FROM BALANCE WHERE user_ID = 0")
-        user_cash = cur.fetchone()[0]
-        if (user_cash > stock_price):
-            # Update the db if the user has enough and update the amount of stocks and subtract the money
-            user_cash = user_cash - stock_price
-            cur.execute("UPDATE BALANCE SET net_cash = %d WHERE user_ID = %s" % (user_cash, user_id))
-            
-            cur.execute("SELECT stock_ID FROM STOCK WHERE stock_ID = '%s' AND user_ID = %s" % (symbol, user_id))
-            exist = cur.fetchone()
-            if exist:
-                cur.execute("SELECT quantity, market_value FROM STOCK WHERE stock_ID = '%s' AND user_ID = %s" % (symbol, user_id))
-                data = cur.fetchone()
-                updated_quantity = int(data[0]) + quantity
-                updated_market_value = float(data[1]) + stock_price
-                cur.execute("UPDATE STOCK SET quantity = %s, market_value = %s WHERE stock_ID = '%s' AND user_ID = %s" % (updated_quantity, updated_market_value, symbol, user_id))
-            
-            else:
-                cur.execute("INSERT INTO STOCK (user_ID, stock_ID, quantity, market_value) VALUES (%s, '%s', %s, %s)" % (user_id, symbol, quantity, stock_price))
-
-            db.commit()
-            cur.close()
-            return redirect('/buy')
-        
-        # If don't user doesn't have enough money tell the user they don't have enough money
+        # Return error page if user does not have enough money
         else:
-            return redirect('/buy')
+            return render_template('error.html', string="You do not have enough in your balance to make this purchase")
 
 # Sell page login requried
 @app.route("/sell", methods=["GET", "POST"])
 def sell():
+    # If user is request for page send html 
     if request.method == "GET":
-        # Get all unique stock own by the user and let them choose which one to sell
-        return render_template('sell.html')
+        # Retrieve all stocks that the user owns
+        symbol_list = get_all_stocks(db, user_id)
+
+        # Send the user a list of possiable stocks that the can sell
+        return render_template('sell.html', data=symbol_list)
     
+    # If user is sending data update DB to sell stocks
     if request.method == "POST":
-        # Subtract amount of stock and add the sold stock's price to the user's net total
+        # Get the symbol and quantity
         symbol = request.form.get('sell-input')
-        quantity = 1
-        try:
-            stock_price = float(api.get_quote_endpoint(symbol=symbol)[0]["05. price"]) * quantity
-            print(stock_price)
-
-        except:
-            print("failed")
-            return redirect('/sell')
-
-        cur = db.cursor()
-        cur.execute("SELECT quantity FROM STOCK WHERE stock_ID = '%s' AND user_ID = %s" % (symbol, user_id))
-        user_quantity = cur.fetchone()[0]
-
-        if user_quantity >= quantity:
-            cur.execute("SELECT net_cash FROM BALANCE WHERE user_ID = 0")
-            updated_cash = float(cur.fetchone()[0]) + stock_price
-            print(updated_cash)
-            cur.execute("UPDATE BALANCE SET net_cash = %d WHERE user_ID = %s" % (updated_cash, user_id))
-
-            updated_quantity = user_quantity - quantity
-            cur.execute("UPDATE STOCK SET quantity = %s WHERE stock_ID = '%s' AND user_ID = %s" % (updated_quantity, symbol, user_id))
+        quantity = int(request.form.get('buy-quantity'))
         
-        db.commit()
-        cur.close()
+        # Get the stock value
+        stock_value = price_lookup(api, symbol)
+        if stock_value == None:
+            return render_template('error.html', string="Please enter a valid stock symbol")
+        
+        # Calcuate the total value, and the updated quantity
+        total_value = stock_value * quantity
+        user_quantity = get_user_stock_quantity(db, user_id, symbol)
+        updated_quantity = user_quantity - quantity
 
-        return render_template('sell.html')
+        # If the user has enough stocks to sell then sell the stocks
+        if updated_quantity > -1:
+            sell_stocks(db, user_id, symbol, total_value, updated_quantity)
+            return redirect('/sell')
+        
+        # If user DOES NOT have enough stocks then return error page
+        else:
+            return render_template('error.html', string="You do not own enough stocks to sell this many")
 
-# login page
+# Login page
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template('login.html')
 
-# register page 
+# Register page 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":

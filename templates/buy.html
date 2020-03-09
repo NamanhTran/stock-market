@@ -2,8 +2,10 @@
 {% set active_page = 'buy' -%}
 {% block body_content %}
 <form action="/buy" method="POST">
-    <label for="quote-input">Enter stock symbol:</label> <br>
+    <label for="buy-input">Enter the stock symbol to buy:</label> 
+    <br>
     <input type="text" name="buy-input">
-    <input type="submit" value="Buy 1">
+    <input type="number" min="1" value="1" name="buy-quantity">
+    <input type="submit" value="Buy Stock(s)">
   </form>
 {% endblock body_content %}
