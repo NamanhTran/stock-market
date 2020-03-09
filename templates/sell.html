@@ -1,5 +1,8 @@
 {% extends "template.html" %}
 {% set active_page = 'sell' -%}
 {% block body_content %}
-<h2>SELL PAGE</h2>
+<form action="/quote" method="POST">
+  <label for="quote-input">Enter stock symbol:</label> <br>
+  <input type="text" name="sell-input">
+</form>
 {% endblock body_content %}
