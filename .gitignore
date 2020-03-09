@@ -2,3 +2,4 @@
 app.pyc
 Pipfile
 Pipfile.lock
+__pycache__
