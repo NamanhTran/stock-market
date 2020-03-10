@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Connection to the local database
 db = MySQLdb.connect(host="localhost",
                      user = "root",
-                     passwd = "Namanhtran1!",
+                     passwd = "password",
                      db = "STOCK_TRADER")
 
 cur = db.cursor()
@@ -66,7 +66,7 @@ def buy():
     # If user is sending data update DB with info given
     elif request.method == "POST":
         # Get the symbol and quantity input from the user
-        symbol = request.form.get('buy-input')
+        symbol = request.form.get('buy-input').upper()
         quantity = int(request.form.get('buy-quantity'))
 
         # Get the stock price
