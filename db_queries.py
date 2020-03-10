@@ -52,6 +52,7 @@ def insert_stocks(db, user_id, user_cash, symbol, quantity, total_value):
     db.commit()
     cur.close()
 
+# Sell stocks given the symbol
 def sell_stocks(db, user_id, symbol, total_value, updated_quantity):
     cur = db.cursor()
 
