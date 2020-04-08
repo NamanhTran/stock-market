@@ -17,7 +17,7 @@ def get_user_stock_quantity(db, user_id, symbol):
 # Get all the stock symbols that the user owns
 def get_all_stocks(db, user_id):
     cur = db.cursor()
-    cur.execute("SELECT stock_ID FROM STOCK WHERE user_ID = %s" % (user_id))
+    cur.execute("SELECT stock_ID, quantity FROM STOCK WHERE user_ID = %s" % (user_id))
     stock_names = cur.fetchall()
     cur.close()
     return stock_names

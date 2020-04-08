@@ -10,7 +10,7 @@ app = Flask(__name__)
 # Connection to the local database
 db = MySQLdb.connect(host="localhost",
                      user = "root",
-                     passwd = "password",
+                     passwd = "Namanhtran1!",
                      db = "STOCK_TRADER")
 
 cur = db.cursor()
@@ -33,7 +33,24 @@ def home():
 # Portfolio page login required
 @app.route('/portfolio')
 def portfolio():
-    return render_template('portfolio.html')
+
+    stock_data = get_all_stocks(db, user_id)
+
+    # Holds a lists full of stock info 
+    portfolio_data = []
+
+    # Final total of all the stocks
+    final_total = 0
+
+    # Cacluate the total value of the stocks and final total
+    for symbol, quantity in stock_data:
+        cur_price = price_lookup(api, symbol)
+        total = cur_price * quantity
+        portfolio_data.append([symbol, quantity, cur_price, total])
+        final_total = final_total + total
+
+    # Send the data to the template and generate it
+    return render_template('portfolio.html', data=portfolio_data, final_total=final_total)
 
 # Quote page login NOT required
 @app.route('/quote', methods=["GET", "POST"])
@@ -95,6 +112,7 @@ def sell():
     if request.method == "GET":
         # Retrieve all stocks that the user owns
         symbol_list = get_all_stocks(db, user_id)
+        print(symbol_list)
 
         # Send the user a list of possiable stocks that the can sell
         return render_template('sell.html', data=symbol_list)

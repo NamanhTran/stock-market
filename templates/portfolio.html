@@ -3,5 +3,25 @@
 {% block body_content %}
 <body>
   <h2>PORTFOLIO PAGE</h2>
+  <table border="1">
+    <tr>
+      <th>Stock</th>
+      <th>Quantity</th>
+      <th>Price</th>
+      <th>Total</th>
+    </tr>
+    {% for symbol, quantity, price, stock_total in data %}
+      <tr>
+        <td>{{symbol}}</td>
+        <td>{{quantity}}</td>
+        <td>${{price}}</td>
+        <td>${{stock_total}}</td>
+      </tr>
+    {% endfor %}
+    <tr align="right">
+      <td colspan=4>${{final_total}}</td>
+    </tr>
+    </tr>
+  </table>
 </body>
 {% endblock body_content %}
