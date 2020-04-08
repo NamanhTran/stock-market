@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from alpha_vantage.timeseries import TimeSeries
 from db_queries import get_user_balance, insert_stocks, get_user_stock_quantity, sell_stocks, get_all_stocks
-from stock_ops import price_lookup
+from stock_ops import price_lookup, convert_to_dollar
 import MySQLdb
 
 # Initialize the flask application
@@ -41,16 +41,18 @@ def portfolio():
 
     # Final total of all the stocks
     final_total = 0
-
+    
     # Cacluate the total value of the stocks and final total
     for symbol, quantity in stock_data:
         cur_price = price_lookup(api, symbol)
         total = cur_price * quantity
-        portfolio_data.append([symbol, quantity, cur_price, total])
+        portfolio_data.append([symbol, quantity, convert_to_dollar(cur_price), convert_to_dollar(total)])
         final_total = final_total + total
+    
+    user_cash = get_user_balance(db, user_id)
 
     # Send the data to the template and generate it
-    return render_template('portfolio.html', data=portfolio_data, final_total=final_total)
+    return render_template('portfolio.html', data=portfolio_data, final_total=convert_to_dollar(final_total), user_cash=convert_to_dollar(user_cash))
 
 # Quote page login NOT required
 @app.route('/quote', methods=["GET", "POST"])
