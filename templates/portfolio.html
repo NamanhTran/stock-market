@@ -2,14 +2,15 @@
 {% set active_page = 'portfolio' -%}
 {% block body_content %}
 <body>
-  <h2>PORTFOLIO PAGE</h2>
-  <table border="1">
-    <tr>
-      <th>Stock</th>
-      <th>Quantity</th>
-      <th>Price</th>
-      <th>Total</th>
-    </tr>
+  <table class="table table-sm table-striped table-bordered table-hover table-responsive">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Stock</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total</th>
+      </tr>
+  </thead>
     {% for symbol, quantity, price, stock_total in data %}
       <tr>
         <td>{{symbol}}</td>
@@ -18,8 +19,9 @@
         <td>${{stock_total}}</td>
       </tr>
     {% endfor %}
-    <tr align="right">
-      <td colspan=4>${{final_total}}</td>
+    <tr>
+      <td colspan=3></td>
+      <td>${{final_total}}</td>
     </tr>
     </tr>
   </table>
