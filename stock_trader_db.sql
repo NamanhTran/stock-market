@@ -2,7 +2,7 @@ CREATE database if not exists STOCK_TRADER;
 use STOCK_TRADER;
 
 CREATE table if not exists CUSTOMER(user_ID int NOT NULL, user_name varchar(20) NOT NULL, 
-first_name varchar(30) NOT NULL, last_name varchar(30) NOT NULL,
+password varchar(20) NOT NULL, first_name varchar(30) NOT NULL, last_name varchar(30) NOT NULL,
 primary key(user_ID, user_name));
 
 CREATE table if not exists STOCK(user_ID int NOT NULL, stock_ID varchar(5) NOT NULL,
