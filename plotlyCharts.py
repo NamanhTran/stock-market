@@ -35,6 +35,7 @@ def get_x_axis_dates(id, number):
                 date_list.append(date.strftime('%d:%I%p'))
                 date_index = date
         return date_list
+      
     if id == 'Month':
         # get the end date to stop and return date_list
         end_date = datetime.datetime.today() + relativedelta(months = -number)
@@ -58,6 +59,7 @@ def get_x_axis_dates(id, number):
                 date_index = date
         date_list.reverse()
         return date_list
+      
     if id == 'Year':
         # get the end date to stop and return date_list
         end_date = datetime.datetime.today() + relativedelta(years = -number)
@@ -81,7 +83,6 @@ def get_x_axis_dates(id, number):
                 date_index = date
         date_list.reverse()
         return date_list
-
 
 def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,months, years
                                     # and number will tell us how many days,months,..
