@@ -27,7 +27,6 @@ def get_x_axis_dates(id, number):
                 date = datetime.datetime.today() + relativedelta(hours = -i)
                 date_list.append(date.strftime('%d:%I%p'))
                 date_index = date
-                #print(f'{date_index} DATE INDEX')
         if number == 5:
             while date_index.strftime('%d:%I%p') != end_date.strftime('%d:%I%p'):
                 i += 1
@@ -35,7 +34,6 @@ def get_x_axis_dates(id, number):
                 print(date)
                 date_list.append(date.strftime('%d:%I%p'))
                 date_index = date
-        #print(date_list)
         return date_list
     if id == 'Month':
         # get the end date to stop and return date_list
@@ -51,17 +49,13 @@ def get_x_axis_dates(id, number):
                 i += 1
                 date = datetime.datetime.today() + relativedelta(days = -i)
                 date_list.append(date.strftime('%Y-%m-%d'))
-                #print(date_list)
                 date_index = date
-                #print(date)
         if number == 6:
             while date_index.strftime('%Y-%m-%d') != end_date.strftime('%Y-%m-%d'):
                 i += 1
                 date = datetime.datetime.today() + relativedelta(days = -i)
                 date_list.append(date.strftime('%Y-%m-%d'))
                 date_index = date
-                #print(date)
-        #print(f'{date_list} DATE LIST')
         date_list.reverse()
         return date_list
     if id == 'Year':
@@ -104,7 +98,6 @@ def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,m
         for _ in clean_data:
             float_list.append(clean_data[:][index])
             index += 1
-        #print(f'{float_list} Cleaned Data List')
         return float_list
 
     if id == 'Month':
@@ -112,13 +105,11 @@ def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,m
         data = ts.get_daily_adjusted(symbol = stock_symbol, outputsize = 'full')[0]
         start_date = datetime.datetime.today() + relativedelta(months = -number)
         clean_data = data[start_date:]['4. close']
-        #print(clean_data)
         float_list = []
         index = 0
         for _ in clean_data:
             float_list.append(clean_data[:][index])
             index += 1
-        #print(f'{float_list} FLOAT LIST')
         return float_list
 
     if id == 'Year':
@@ -126,13 +117,11 @@ def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,m
         data = ts.get_daily_adjusted(symbol = stock_symbol, outputsize = 'full')[0]
         start_date = datetime.datetime.today() + relativedelta(years = -number)
         clean_data = data[start_date:]['4. close']
-
         float_list = []
         index = 0
         for _ in clean_data:
             float_list.append(clean_data[:][index])
             index += 1
-        #print(f'{float_list} Cleaned Data List')
         return float_list
 
 def get_stockcharts(stock_symbol, id, number):
@@ -151,7 +140,6 @@ def get_stockcharts(stock_symbol, id, number):
         width=650,
         height=550,
     )
-    #fig.show()
     graph_to_div = Markup(plot(fig, output_type='div'))
 
     return graph_to_div
