@@ -22,13 +22,4 @@ date_of_withdrawal datetime, withdrawal_amount DECIMAL (12,2),
 primary key(user_ID),
 foreign key(user_ID) references CUSTOMER(user_ID));
 
-CREATE table if not exists BANK_INFO(user_ID int NOT NULL, bank_num int, 
-bank_name varchar(45), account_num int, paper_routing_num int, wire_routing_num int,
-bank_address1 varchar(60), bank_address2 varchar(60), city varchar(45),
-state varchar(30), country varchar(45), zip varchar(5), date_added datetime,
-date_removed datetime, status_of_account varchar(20),
-primary key(user_ID, bank_num),
-foreign key(user_ID) references CUSTOMER(user_ID));
-
-
 show tables;
