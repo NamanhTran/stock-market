@@ -13,7 +13,16 @@
   <br>
   <input type="button" id="ajax-button" value="Show Stock Data" onclick='ajax("5", "Day");'>
   <br>
-  <div id="chart"></div>
+  <br>
+  <form action="xml" method="POST">
+    <button type="button" onclick='ajax("1", "Day");'>1 Day</button>
+    <button type="button" onclick='ajax("5", "Day");'>5 Days</button>
+    <button type="button" onclick='ajax("1", "Month");'>1 Month</button>
+    <button type="button" onclick='ajax("6", "Month");'>6 Months</button>
+    <button type="button" onclick='ajax("1", "Year");'>1 Year</button>
+    <button type="button" onclick='ajax("5", "Year");'>5 Years</button>
+  </form> 
+  <div id="chart">{{ chart }}</div>
 </form>
 
 <script>
@@ -33,13 +42,13 @@
               for (var n = 0; n < arr.length; n++)
                   eval(arr[n].innerHTML)
               
-              chart_html.innerHTML += '<button type="button" onclick=\'ajax("1", "Day");\'>1 Day</button> <button type="button" onclick=\'ajax("5", "Day");\'>5 Days</button> <button type="button" onclick=\'ajax("1", "Month");\'>1 Month</button> <button type="button" onclick=\'ajax("6", "Month");\'>6 Months</button> <button type="button" onclick=\'ajax("1", "Year");\'>1 Year</button> <button type="button"  onclick=\'ajax("5", "Year");\'>5 Years</button>';
+              //chart_html.innerHTML += '<button type="button" onclick=\'ajax("1", "Day");\'>1 Day</button> <button type="button" onclick=\'ajax("5", "Day");\'>5 Days</button> <button type="button" onclick=\'ajax("1", "Month");\'>1 Month</button> <button type="button" onclick=\'ajax("6", "Month");\'>6 Months</button> <button type="button" onclick=\'ajax("1", "Year");\'>1 Year</button> <button type="button"  onclick=\'ajax("5", "Year");\'>5 Years</button>';
           }
 
           else {
               console.log(this.status);
               console.log(this.readyState);
-              chart_html.innerHTML = "If you are waiting too long you may have entered an invalid stock symbol";
+              //chart_html.innerHTML = "If you are waiting too long you may have entered an invalid stock symbol";
           }
       }
 
@@ -48,4 +57,5 @@
       req.send("text-input=" + document.getElementById('buy-input').value + "&id=" + id + "&num=" + num.toString());
   }
 </script>
+
 {% endblock body_content %}

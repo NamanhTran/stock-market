@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, send_file
 from alpha_vantage.timeseries import TimeSeries
 from db_queries import get_user_balance, insert_stocks, get_user_stock_quantity, sell_stocks, get_all_stocks
 from stock_ops import price_lookup, convert_to_dollar
-from plotlyCharts import get_stockcharts
+from plotlyCharts import get_stockcharts, get_freshGraph
 import MySQLdb
 import base64
 
@@ -54,7 +54,7 @@ def portfolio():
     user_cash = get_user_balance(db, user_id)
 
     # Send the data to the template and generate it
-    return render_template('portfolio.html', data=portfolio_data, final_total=convert_to_dollar(final_total), user_cash=convert_to_dollar(user_cash))
+    return render_template('portfolio.html', data=portfolio_data, final_total=convert_to_dollar(final_total + user_cash), user_cash=convert_to_dollar(user_cash))
 
 # Quote page login NOT required
 @app.route('/quote', methods=["GET", "POST"])
@@ -75,14 +75,14 @@ def quote():
 
         # Send data to html page and give user the rendered html page
         data = {'price': stock_value, 'symbol': symbol}
-        return render_template('quote_response.html', data=data)
+        return render_template('quote_response.html', data=data, chart=get_stockcharts(symbol, "Day", 5))
 
 # Buy page login required
 @app.route("/buy", methods=["GET", "POST"])
 def buy():
     # If user is request for page send html
     if request.method == "GET":
-        return render_template('buy.html')
+        return render_template('buy.html', chart=get_freshGraph())
     
     # If user is sending data update DB with info given
     elif request.method == "POST":
@@ -119,7 +119,7 @@ def sell():
         print(symbol_list)
 
         # Send the user a list of possiable stocks that the can sell
-        return render_template('sell.html', data=symbol_list)
+        return render_template('sell.html', data=symbol_list, chart=get_freshGraph())
     
     # If user is sending data update DB to sell stocks
     if request.method == "POST":

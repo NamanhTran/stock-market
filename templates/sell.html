@@ -8,10 +8,11 @@
     {% for symbol in data %}
       <option value="{{ symbol[0] }}">{{ symbol[0] }}</option>
     {% endfor %}
-  </select> 
+  </select>
   <input type="number" min="1" max="100" value="1" name="buy-quantity">
   <input type="submit" value="Sell Stock(s)">
 </form>
+
 
 <script>
   function ajax(num, id) {
@@ -30,13 +31,13 @@
               for (var n = 0; n < arr.length; n++)
                   eval(arr[n].innerHTML)
               
-              chart_html.innerHTML += '<button type="button" onclick=\'ajax("1", "Day");\'>1 Day</button> <button type="button" onclick=\'ajax("5", "Day");\'>5 Days</button> <button type="button" onclick=\'ajax("1", "Month");\'>1 Month</button> <button type="button" onclick=\'ajax("6", "Month");\'>6 Months</button> <button type="button" onclick=\'ajax("1", "Year");\'>1 Year</button> <button type="button"  onclick=\'ajax("5", "Year");\'>5 Years</button>';
+              //chart_html.innerHTML += '<button type="button" onclick=\'ajax("1", "Day");\'>1 Day</button> <button type="button" onclick=\'ajax("5", "Day");\'>5 Days</button> <button type="button" onclick=\'ajax("1", "Month");\'>1 Month</button> <button type="button" onclick=\'ajax("6", "Month");\'>6 Months</button> <button type="button" onclick=\'ajax("1", "Year");\'>1 Year</button> <button type="button"  onclick=\'ajax("5", "Year");\'>5 Years</button>';
           }
 
           else {
               console.log(this.status);
               console.log(this.readyState);
-              chart_html.innerHTML = "If you are waiting too long you may have entered an invalid stock symbol or we've ran out of API calls";
+              //chart_html.innerHTML = "If you are waiting too long you may have entered an invalid stock symbol or we've ran out of API calls";
           }
       }
 
@@ -52,6 +53,15 @@
   <br>
   <input type="button" id="ajax-button" value="Show Stock Data" onclick='ajax("5", "Day");'>
   <br>
-  <div id="chart"></div>
-</form>
+  <br>
+  <form action="xml" method="POST">
+    <button type="button" onclick='ajax("1", "Day");'>1 Day</button>
+    <button type="button" onclick='ajax("5", "Day");'>5 Days</button>
+    <button type="button" onclick='ajax("1", "Month");'>1 Month</button>
+    <button type="button" onclick='ajax("6", "Month");'>6 Months</button>
+    <button type="button" onclick='ajax("1", "Year");'>1 Year</button>
+    <button type="button" onclick='ajax("5", "Year");'>5 Years</button>
+  </form>
+  <div id="chart">{{ chart }}</div>
+
 {% endblock body_content %}

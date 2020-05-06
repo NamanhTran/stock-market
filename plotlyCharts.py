@@ -137,3 +137,22 @@ def get_stockcharts(stock_symbol, id, number):
     graph_to_div = Markup(plot(fig, output_type='div'))
 
     return graph_to_div
+
+def get_freshGraph():
+    # get all stock data
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x = [],
+        y = []
+    ))
+
+    fig.update_layout(
+        margin = dict(l=20, r=20, t=40, b=20),
+        paper_bgcolor="LightSteelBlue",
+        autosize=True,
+        width=650,
+        height=550,
+    )
+    graph_to_div = Markup(plot(fig, output_type='div'))
+
+    return graph_to_div
