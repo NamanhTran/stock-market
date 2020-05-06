@@ -144,7 +144,7 @@ def get_stockcharts(stock_symbol, id, number):
         width=650,
         height=550,
     )
-    fig.show()
-    graph_to_div = Markup(plot(fig, output_type='div'))
+    
+    graph_to_div = Markup(plot(fig, output_type="div"))
 
     return graph_to_div

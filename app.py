@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, send_file
 from alpha_vantage.timeseries import TimeSeries
 from db_queries import get_user_balance, insert_stocks, get_user_stock_quantity, sell_stocks, get_all_stocks
 from stock_ops import price_lookup, convert_to_dollar
+from plotlyCharts import get_stockcharts
 import MySQLdb
+import base64
 
 # Initialize the flask application
 app = Flask(__name__)
@@ -155,3 +157,18 @@ def login():
 def register():
     if request.method == "GET":
         return render_template('register.html')
+
+# XML test page 
+@app.route("/xml", methods=["GET", "POST"])
+def xml():
+    if request.method == "GET":
+        return render_template('xml.html')
+    
+    elif request.method == "POST":
+        symbol = request.form["text-input"]
+        id = request.form["id"]
+        number = int(request.form["num"])
+        print(symbol)
+        div_string = get_stockcharts(symbol, id, number)
+        
+        return div_string
