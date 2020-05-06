@@ -18,7 +18,6 @@ def get_x_axis_dates(id, number):
     i = 0
     if id == 'Day':
         end_date = datetime.datetime.today() + relativedelta(days = -number)
-        #print(f'{end_date} END DATE')
         date_index = datetime.datetime.today()
         date_list.append(date_index.strftime('%d:%I%p'))
         if number == 1:
@@ -34,12 +33,11 @@ def get_x_axis_dates(id, number):
                 print(date)
                 date_list.append(date.strftime('%d:%I%p'))
                 date_index = date
+        date_list.reverse()
         return date_list
-      
     if id == 'Month':
         # get the end date to stop and return date_list
         end_date = datetime.datetime.today() + relativedelta(months = -number)
-        #print(end_date)
         # get starting date for indexing
         date_index = datetime.datetime.today()
         # append start date to date_list
@@ -59,11 +57,9 @@ def get_x_axis_dates(id, number):
                 date_index = date
         date_list.reverse()
         return date_list
-      
     if id == 'Year':
         # get the end date to stop and return date_list
         end_date = datetime.datetime.today() + relativedelta(years = -number)
-        #print(end_date)
         # get starting date for indexing
         date_index = datetime.datetime.today()
         # append start date to date_list
@@ -84,6 +80,7 @@ def get_x_axis_dates(id, number):
         date_list.reverse()
         return date_list
 
+
 def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,months, years
                                     # and number will tell us how many days,months,..
     # get a all data from a given start date only
@@ -92,15 +89,12 @@ def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,m
         data = ts.get_intraday(symbol = stock_symbol, interval='5min', outputsize = 'full')[0]
         start_date = datetime.datetime.today() + relativedelta(days = -number)
         clean_data = data[start_date:]['4. close']
-        #print(f'{clean_data} CLEANED DATA')
-
         float_list = []
         index = 0
         for _ in clean_data:
             float_list.append(clean_data[:][index])
             index += 1
         return float_list
-
     if id == 'Month':
         ts = TimeSeries(key = 'H2AKUMZSFASPIHZH', output_format = 'pandas')
         data = ts.get_daily_adjusted(symbol = stock_symbol, outputsize = 'full')[0]
@@ -112,7 +106,6 @@ def get_y_axis_data(stock_symbol, id, number):   # id will tell us if its days,m
             float_list.append(clean_data[:][index])
             index += 1
         return float_list
-
     if id == 'Year':
         ts = TimeSeries(key = 'H2AKUMZSFASPIHZH', output_format = 'pandas')
         data = ts.get_daily_adjusted(symbol = stock_symbol, outputsize = 'full')[0]
@@ -135,6 +128,27 @@ def get_stockcharts(stock_symbol, id, number):
 
     fig.update_layout(
         title = f"{stock_symbol} {number} {id} Stock Chart",
+        margin = dict(l=20, r=20, t=40, b=20),
+        paper_bgcolor="LightSteelBlue",
+        autosize=True,
+        width=650,
+        height=550,
+    )
+    # fig.show()
+    graph_to_div = Markup(plot(fig, output_type='div'))
+
+    return graph_to_div
+
+
+def get_freshGraph():
+    # get all stock data
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x = [],
+        y = []
+    ))
+
+    fig.update_layout(
         margin = dict(l=20, r=20, t=40, b=20),
         paper_bgcolor="LightSteelBlue",
         autosize=True,
