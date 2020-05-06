@@ -23,3 +23,10 @@ primary key(user_ID),
 foreign key(user_ID) references CUSTOMER(user_ID));
 
 show tables;
+
+
+/*if using phpmyadmin: Server: sql3.freemysqlhosting.net
+Name: sql3336583
+Username: sql3336583
+Password: lV73A1HxhE
+Port number: 3306 */
