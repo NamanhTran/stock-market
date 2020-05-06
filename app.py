@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from flask import Flask, render_template, request, redirect, send_file
 from alpha_vantage.timeseries import TimeSeries
 from db_queries import get_user_balance, insert_stocks, get_user_stock_quantity, sell_stocks, get_all_stocks

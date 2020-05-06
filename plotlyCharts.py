@@ -134,11 +134,6 @@ def get_stockcharts(stock_symbol, id, number):
         width=650,
         height=550,
     )
-<<<<<<< HEAD
-    
-    graph_to_div = Markup(plot(fig, output_type="div"))
-=======
     graph_to_div = Markup(plot(fig, output_type='div'))
->>>>>>> 7c657c50d4a88b469c5b09f2788c0b1253cf1408
 
     return graph_to_div
